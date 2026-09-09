@@ -1,6 +1,0 @@
-@BackendMdViewer_HostAddress = http://localhost:5145
-
-GET {{BackendMdViewer_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###
