@@ -2,7 +2,7 @@ namespace BackendMdViewer.Services.UploadService;
 
 public class UploadService : IUploadService
 {
-  private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "markdown");
+  private readonly string _storagePath = Path.Combine(Directory.GetCurrentDirectory(), "stored_files");
 
   public UploadService()
   {
