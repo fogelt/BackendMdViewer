@@ -35,7 +35,7 @@ public class MarkdownController(IUploadService uploadService) : ControllerBase
   }
 
   [HttpGet("allFiles")]
-  public IActionResult GetAllFiles()
+  public ActionResult<IEnumerable<string>> GetAllFiles()
   {
     var files = uploadService.ListMarkdownFiles();
 
