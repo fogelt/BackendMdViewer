@@ -1,3 +1,4 @@
+using BackendMdViewer.Services.ArtificialService;
 using BackendMdViewer.Services.UploadService;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddControllers();
 builder.Services.AddScoped<IUploadService, UploadService>();
+builder.Services.AddHttpClient<IArtificialService, ArtificialService>();
 builder.Services.AddSwaggerGen();
 
 

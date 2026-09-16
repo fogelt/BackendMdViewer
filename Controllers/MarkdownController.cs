@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using BackendMdViewer.Services.UploadService;
+using BackendMdViewer.Services.ArtificialService;
 
 namespace BackendMdViewer.Controllers;
 
@@ -87,5 +88,15 @@ public class MarkdownController(IUploadService uploadService) : ControllerBase
     {
       return BadRequest(new { Problem = ex.Message });
     }
+  }
+
+  [HttpPost("beautify")]
+  public async Task<IActionResult> Beautify(
+  [FromBody] string content,
+  IArtificialService artificialService)
+  {
+    var result = await artificialService.BeautifyMarkdownAsync(content);
+
+    return Ok(result);
   }
 }
