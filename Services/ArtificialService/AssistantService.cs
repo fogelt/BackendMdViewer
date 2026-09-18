@@ -1,12 +1,12 @@
 using System.Net.Http.Json;
 using System.Text.Json;
 
-namespace BackendMdViewer.Services.ArtificialService;
+namespace BackendMdViewer.Services.AssistantService;
 
-public class ArtificialService(
+public class AssistantService(
   HttpClient httpClient,
   IConfiguration configuration
-) : IArtificialService
+) : IAssistantService
 {
   public async Task<string> BeautifyMarkdownAsync(string content)
   {

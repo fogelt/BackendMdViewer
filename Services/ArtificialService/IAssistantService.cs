@@ -1,6 +1,6 @@
 namespace BackendMdViewer.Services.ArtificialService;
 
-public interface IArtificialService
+public interface IAssistantService
 {
   Task<string> BeautifyMarkdownAsync(string content);
 }
