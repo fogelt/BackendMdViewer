@@ -1,4 +1,4 @@
-namespace BackendMdViewer.Services.ArtificialService;
+namespace BackendMdViewer.Services.AssistantService;
 
 public interface IAssistantService
 {

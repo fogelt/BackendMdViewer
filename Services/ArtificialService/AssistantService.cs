@@ -1,11 +1,10 @@
-using System.Net.Http.Json;
-using System.Text.Json;
+using Google.GenAI;
+using Google.GenAI.Types;
 
 namespace BackendMdViewer.Services.AssistantService;
 
 public class AssistantService(
-  HttpClient httpClient,
-  IConfiguration configuration
+    IConfiguration configuration
 ) : IAssistantService
 {
   public async Task<string> BeautifyMarkdownAsync(string content)
@@ -15,63 +14,29 @@ public class AssistantService(
     if (string.IsNullOrWhiteSpace(apiKey))
       throw new InvalidOperationException("Gemini API key is not configured.");
 
-    var request = new
+    var client = new Client(apiKey: apiKey);
+
+    var config = new GenerateContentConfig
     {
-      systemInstruction = new
+      SystemInstruction = new Content
       {
-        parts = new[]
-        {
-          new
-          {
-            text = """
-              You are a Markdown formatting assistant.
-
-              Beautify the provided content using clean, readable Markdown syntax.
-
-              Preserve the original meaning and content.
-              Improve structure where appropriate using headings, paragraphs, lists,
-              blockquotes, emphasis, links, and code blocks.
-
-              Do not add commentary.
-              Do not explain your changes.
-              Do not wrap the result in a Markdown code fence.
-
-              Return ONLY the resulting Markdown.
-              """
-          }
-        }
-      },
-      contents = new[]
-      {
-        new
-        {
-          parts = new[]
-          {
-            new
-            {
-              text = content
-            }
-          }
-        }
+        Parts = [new Part { Text = """
+                    You are a Markdown formatting assistant.
+                    Beautify the provided content using clean, readable Markdown syntax.
+                    Preserve the original meaning and content.
+                    Do not add commentary, explanations, or wrap the result in code fences.
+                    Return ONLY the resulting Markdown.
+                    """ }]
       }
     };
 
-    var response = await httpClient.PostAsJsonAsync(
-      $"https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={apiKey}",
-      request
+    var response = await client.Models.GenerateContentAsync(
+        model: "gemini-2.5-flash",
+        contents: content,
+        config: config
     );
 
-    response.EnsureSuccessStatusCode();
-
-    using var json = await response.Content.ReadFromJsonAsync<JsonDocument>();
-
-    var result = json?
-      .RootElement
-      .GetProperty("candidates")[0]
-      .GetProperty("content")
-      .GetProperty("parts")[0]
-      .GetProperty("text")
-      .GetString();
+    var result = response.Candidates?[0]?.Content?.Parts?[0]?.Text;
 
     if (string.IsNullOrWhiteSpace(result))
       throw new InvalidOperationException("Gemini returned an empty response.");
