@@ -31,7 +31,7 @@ public class AssistantService(
     };
 
     var response = await client.Models.GenerateContentAsync(
-        model: "gemini-2.5-flash",
+        model: "gemini-3.1-flash-lite",
         contents: content,
         config: config
     );

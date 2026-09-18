@@ -91,12 +91,12 @@ public class MarkdownController(IUploadService uploadService) : ControllerBase
   }
 
   [HttpPost("beautify")]
+  [ProducesResponseType(typeof(string), StatusCodes.Status200OK)]
   public async Task<IActionResult> Beautify(
-  [FromBody] string content,
-  IAssistantService assistantService)
+      [FromBody] string body,
+      IAssistantService assistantService)
   {
-    var result = await assistantService.BeautifyMarkdownAsync(content);
-
+    var result = await assistantService.BeautifyMarkdownAsync(body);
     return Ok(result);
   }
 }
