@@ -10,9 +10,12 @@ public class AssistantService(
   public async Task<string> BeautifyMarkdownAsync(string content)
   {
     var apiKey = configuration["AI:ApiKey"];
+    var model = configuration["AI:Model"];
 
     if (string.IsNullOrWhiteSpace(apiKey))
       throw new InvalidOperationException("Gemini API key is not configured.");
+    if (string.IsNullOrWhiteSpace(model))
+      throw new InvalidOperationException("AI model not set in appsettings.");
 
     var client = new Client(apiKey: apiKey);
 
@@ -31,7 +34,7 @@ public class AssistantService(
     };
 
     var response = await client.Models.GenerateContentAsync(
-        model: "gemini-3.1-flash-lite",
+        model: model,
         contents: content,
         config: config
     );
