@@ -16,4 +16,5 @@ To enable AI features, you must obtain a Google API key and store it in your .NE
 
 ```bash
 dotnet user-secrets set "AI:ApiKey" "YOUR_API_KEY_HERE"
+# See appsettings.json for model configuration
 ```
